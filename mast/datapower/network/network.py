@@ -222,7 +222,11 @@ Parameters:
 the running configuration will be returned"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout=120)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout=120,
+        check_hostname=check_hostname)
     logger.info(
         "Attempting to Retrieve EthernetInterface configuration for {} {}".format(
             str(env.appliances), EthernetInterface))
