@@ -10,9 +10,13 @@ McIndi Solutions LLC
 import os
 import flask
 import commandr
+from mast.plugins.web import Plugin
+import mast.datapower.datapower as datapower
 from mast.logging import make_logger, logged
 import mast.plugin_utils.plugin_utils as util
-import mast.datapower.datapower as datapower
+from functools import partial, update_wrapper
+import mast.plugin_utils.plugin_functions as pf
+
 
 cli = commandr.Commandr()
 
@@ -87,7 +91,11 @@ Parameters:
 * remote_ports - The ports on the remote hosts to test"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     logger.info(
         "Performing TCP Connection Test from {} to {} on ports {}".format(
             str(env.appliances),
@@ -120,9 +128,9 @@ Parameters:
                     str(success))
                 print line
 #
-#~#~#~#~#~#~#~#
+# ~#~#~#~#~#~#~#
 
-#~#~#~#~#~#~#~#
+# ~#~#~#~#~#~#~#
 # Network Configuration
 # =====================
 #
@@ -146,7 +154,8 @@ Parameters:
 @logged("mast.datapower.network")
 @cli.command("display-routing-table", category="network config")
 def display_routing_table(appliances=[], credentials=[],
-    timeout=120, web=False, no_check_hostname=False):
+                          timeout=120, web=False,
+                          no_check_hostname=False):
     """Display the routing table for the specified appliances
 
 __NOTE__: This will try the RoutingStatus3 status provider and
@@ -154,21 +163,29 @@ it will fall back to RoutingStatus2 if the appliance doesn't
 support RoutingStatus3.'"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     logger.info(
         "Attempting to retrieve routing table from {}".format(
             str(env.appliances)))
 
     # try RoutingStatus3 first
     logger.debug("Attempting RoutingStatus3")
-    resp = env.perform_action("get_status", domain="default",
+    resp = env.perform_action(
+        "get_status",
+        domain="default",
         provider="RoutingStatus3")
     xpath = datapower.STATUS_XPATH + "RoutingStatus3"
     all_failed = all(val is False for val in resp.values())
     if all_failed:
         logger.warn(
             "RoutingStatus3 unavailable, falling back to RoutingStatus2")
-        resp = env.perform_action("get_status", domain="default",
+        resp = env.perform_action(
+            "get_status",
+            domain="default",
             provider="RoutingStatus2")
         xpath = datapower.STATUS_XPATH + "RoutingStatus2"
     logger.debug("Response received: {}".format(resp))
@@ -211,7 +228,8 @@ support RoutingStatus3.'"""
 @logged("mast.datapower.network")
 @cli.command('display-ethernet-interface', category='network config')
 def display_ethernet_interface(appliances=[], credentials=[], timeout=120,
-        EthernetInterface="", persisted=True, web=False, no_check_hostname=False):
+                               EthernetInterface="", persisted=True,
+                               web=False, no_check_hostname=False):
     """This will display the details of the specified ethernet interface
 on the specified appliances.
 
@@ -228,11 +246,15 @@ the running configuration will be returned"""
         timeout=120,
         check_hostname=check_hostname)
     logger.info(
-        "Attempting to Retrieve EthernetInterface configuration for {} {}".format(
+        "Attempting to Retrieve EthernetInterface configuration for "
+        "{} {}".format(
             str(env.appliances), EthernetInterface))
 
-    resp = env.perform_action("get_config", _class="EthernetInterface",
-        name=EthernetInterface, persisted=persisted)
+    resp = env.perform_action(
+        "get_config",
+        _class="EthernetInterface",
+        name=EthernetInterface,
+        persisted=persisted)
     logger.debug("Response received: {}".format(str(resp)))
     if web:
         return (
@@ -247,12 +269,17 @@ the running configuration will be returned"""
 @logged("mast.datapower.network")
 @cli.command('list-host-aliases', category='network config')
 def list_host_aliases(appliances=[], credentials=[],
-    timeout=120, web=False, no_check_hostname=False):
+                      timeout=120, web=False,
+                      no_check_hostname=False):
     """Lists the host aliases of the specified appliances as well as
 the host aliases common to all specified appliances."""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     logger.info(
         "Attempting to find host aliases for {}".format(
             str(env.appliances)))
@@ -286,7 +313,8 @@ the host aliases common to all specified appliances."""
 def add_host_alias(appliances=[], credentials=[],
                    timeout=120, save_config=False,
                    name=None, ip=None,
-                   admin_state='enabled', web=False, no_check_hostname=False):
+                   admin_state='enabled', web=False,
+                   no_check_hostname=False):
     """Adds a host alias to the specified appliances.
 
 Parameters:
@@ -337,7 +365,11 @@ Parameters:
 removing the host alias
 * HostAlias - The name of the host alias to remove"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     kwargs = {'name': HostAlias}
     resp = env.perform_async_action('del_host_alias', **kwargs)
 
@@ -358,7 +390,8 @@ removing the host alias
 @logged("mast.datapower.network")
 @cli.command('list-secondary-addresses', category='network config')
 def list_secondary_addresses(appliances=[], credentials=[],
-    timeout=120, EthernetInterface="", web=False, no_check_hostname=False):
+                             timeout=120, EthernetInterface="",
+                             web=False, no_check_hostname=False):
     """This will list the secondary IP Addresses on the specified
 Ethernet Interface for the specified appliances.
 
@@ -367,7 +400,11 @@ Parameters:
 * EthernetInterface - The ethernet interface to examine for secondary
 addresses"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
 
     kwargs = {'interface': EthernetInterface}
 
@@ -388,9 +425,10 @@ addresses"""
 @logged("mast.datapower.network")
 @cli.command('add-secondary-address', category='network config')
 def add_secondary_address(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   EthernetInterface="",
-                   secondary_address=None, web=False, no_check_hostname=False):
+                          timeout=120, save_config=False,
+                          EthernetInterface="",
+                          secondary_address=None, web=False,
+                          no_check_hostname=False):
     """Adds a secondary IP address to the specified appliances on the
 specified ethernet interface
 
@@ -403,7 +441,11 @@ secondary address
 * secondary-address - The secondary IP address to add to the ethernet
 interface"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     kwargs = {
         'ethernet_interface': EthernetInterface,
         'secondary_address': secondary_address}
@@ -426,9 +468,10 @@ interface"""
 @logged("mast.datapower.network")
 @cli.command('del-secondary-address', category='network config')
 def del_secondary_address(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   EthernetInterface="",
-                   secondary_address=None, web=False, no_check_hostname=False):
+                          timeout=120, save_config=False,
+                          EthernetInterface="",
+                          secondary_address=None, web=False,
+                          no_check_hostname=False):
     """Removes a secondary IP address from the specified appliances on the
 specified ethernet interface
 
@@ -441,7 +484,11 @@ secondary address from
 * secondary-address - The secondary IP address to remove from the
 ethernet interface"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
 
     kwargs = {
         'ethernet_interface': EthernetInterface,
@@ -464,10 +511,16 @@ ethernet interface"""
 
 @logged("mast.datapower.network")
 @cli.command('list-static-hosts', category='network config')
-def list_static_hosts(appliances=[], credentials=[], timeout=120, web=False, no_check_hostname=False):
+def list_static_hosts(appliances=[], credentials=[],
+                      timeout=120, web=False,
+                      no_check_hostname=False):
     """This will list the static hosts on the specified appliances."""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
 
     resp = env.perform_async_action('get_static_hosts')
 
@@ -486,8 +539,9 @@ def list_static_hosts(appliances=[], credentials=[], timeout=120, web=False, no_
 @logged("mast.datapower.network")
 @cli.command('add-static-host', category='network config')
 def add_static_host(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   hostname=None, ip=None, web=False, no_check_hostname=False):
+                    timeout=120, save_config=False,
+                    hostname=None, ip=None, web=False,
+                    no_check_hostname=False):
     """Adds a static host to  the specified appliances
 
 Parameters:
@@ -497,7 +551,11 @@ the host alias
 * hostname - The hostname of the static host
 * ip - The IP address of the static host"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     kwargs = {
         'hostname': hostname,
         'ip': ip}
@@ -520,8 +578,9 @@ the host alias
 @logged("mast.datapower.network")
 @cli.command('del-static-host', category='network config')
 def del_static_host(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   hostname=None, web=False, no_check_hostname=False):
+                    timeout=120, save_config=False,
+                    hostname=None, web=False,
+                    no_check_hostname=False):
     """Removes a static host from the specified appliances
 
 Parameters:
@@ -530,8 +589,14 @@ Parameters:
 the host alias
 * hostname - The hostname of the static host"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
-    resp = env.perform_async_action('del_static_host', **{'hostname': hostname})
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
+    resp = env.perform_async_action(
+        'del_static_host',
+        **{'hostname': hostname})
 
     if web:
         output = util.render_boolean_results_table(
@@ -549,7 +614,8 @@ the host alias
 @logged("mast.datapower.network")
 @cli.command('list-static-routes', category='network config')
 def list_static_routes(appliances=[], credentials=[], timeout=120,
-    EthernetInterface="", web=False, no_check_hostname=False):
+                       EthernetInterface="", web=False,
+                       no_check_hostname=False):
     """This will list all of the static routes on the specified
 EthernetInterface on the specified appliances.
 
@@ -557,7 +623,11 @@ Parameters:
 
 * EthernetInterface - The EthernetInterface to examine fir static routes"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
 
     kwargs = {'interface': EthernetInterface}
     resp = env.perform_action('get_static_routes', **kwargs)
@@ -577,9 +647,10 @@ Parameters:
 @logged("mast.datapower.network")
 @cli.command('add-static-route', category='network config')
 def add_static_route(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   EthernetInterface="", destination=None,
-                   gateway=None, metric='0', web=False, no_check_hostname=False):
+                     timeout=120, save_config=False,
+                     EthernetInterface="", destination=None,
+                     gateway=None, metric='0', web=False,
+                     no_check_hostname=False):
     """Adds a static route to the specified appliance on the specified
 ethernet interface
 
@@ -593,7 +664,11 @@ the host alias
 * metric - Set the metric (priority) for this static route.
 (The higher the metric the more prefered that route will be)"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     kwargs = {
         'ethernet_interface': EthernetInterface,
         'destination': destination,
@@ -617,8 +692,9 @@ the host alias
 @logged("mast.datapower.network")
 @cli.command('del-static-route', category='network config')
 def del_static_route(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   EthernetInterface="", destination=None, web=False, no_check_hostname=False):
+                     timeout=120, save_config=False,
+                     EthernetInterface="", destination=None,
+                     web=False, no_check_hostname=False):
     """Removes a static route from the specified appliance on the specified
 ethernet interface
 
@@ -629,7 +705,11 @@ the host alias
 * EthernetInterface - The ethernet interface to remove the static route from
 * destination - The destination for the static route to be removed"""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     kwargs = {
         'ethernet_interface': EthernetInterface,
         'destination': destination}
@@ -647,10 +727,10 @@ the host alias
     if web:
         return output, util.render_history(env)
 #
-#~#~#~#~#~#~#~#
+# ~#~#~#~#~#~#~#
 
 
-#~#~#~#~#~#~#~#
+# ~#~#~#~#~#~#~#
 # Caches
 # ======
 #
@@ -672,7 +752,11 @@ def flush_arp_cache(appliances=[], credentials=[],
                     timeout=120, web=False, no_check_hostname=False):
     """This will flush the ARP Cache on the specified appliances."""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     responses = env.perform_action('FlushArpCache')
 
     if web:
@@ -697,7 +781,11 @@ def flush_dns_cache(appliances=[], credentials=[],
                     timeout=120, web=False, no_check_hostname=False):
     """This will flush the DNS Cache for the specified appliances."""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     responses = env.perform_action('FlushDNSCache')
 
     if web:
@@ -722,7 +810,11 @@ def flush_nd_cache(appliances=[], credentials=[],
                    timeout=120, web=False, no_check_hostname=False):
     """This will flush the ND cache on the specified appliances."""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     responses = env.perform_action('FlushNDCache')
 
     if web:
@@ -744,11 +836,16 @@ def flush_nd_cache(appliances=[], credentials=[],
 @logged("mast.datapower.network")
 @cli.command('flush-pdp-cache', category='caches')
 def flush_pdp_cache(appliances=[], credentials=[],
-                    timeout=120, XACMLPDP="", web=False, no_check_hostname=False):
+                    timeout=120, XACMLPDP="",
+                    web=False, no_check_hostname=False):
     """This will flush the PDP cache on the specified appliances
 for the specified XACMLPDP."""
     check_hostname = not no_check_hostname
-    env = datapower.Environment(appliances, credentials, timeout, check_hostname=check_hostname)
+    env = datapower.Environment(
+        appliances,
+        credentials,
+        timeout,
+        check_hostname=check_hostname)
     kwargs = {"XACMLPDP": XACMLPDP}
     responses = env.perform_action('FlushPDPCache', **kwargs)
 
@@ -774,10 +871,6 @@ def get_data_file(f):
     with open(path, "rb") as fin:
         return fin.read()
 
-from mast.plugins.web import Plugin
-import mast.plugin_utils.plugin_functions as pf
-from functools import partial, update_wrapper
-
 
 class WebPlugin(Plugin):
     def __init__(self):
@@ -800,4 +893,3 @@ if __name__ == '__main__':
         if "'NoneType' object has no attribute 'app'" in e:
             raise NotImplementedError(
                 "HTML formatted output is not supported on the CLI")
-
