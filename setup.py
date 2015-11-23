@@ -24,12 +24,9 @@ setup(
             'network=mast.datapower.network:WebPlugin'
         ]
     },
-    data_files=[
-        ("mast/datapower/network/data", [
-            "./mast/datapower/network/docroot/plugin.js",
-            "./mast/datapower/network/docroot/plugin.css"
-        ])
-    ],
+    package_data={
+        "mast.datapower.network": ["docroot/*"]
+    },
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 5 - Production/Stable",

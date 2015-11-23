@@ -11,6 +11,7 @@ import os
 import flask
 import commandr
 from mast.plugins.web import Plugin
+from pkg_resources import resource_string
 import mast.datapower.datapower as datapower
 from mast.logging import make_logger, logged
 import mast.plugin_utils.plugin_utils as util
@@ -866,10 +867,7 @@ for the specified XACMLPDP."""
 
 
 def get_data_file(f):
-    _root = os.path.dirname(__file__)
-    path = os.path.join(_root, "data", f)
-    with open(path, "rb") as fin:
-        return fin.read()
+    return resource_string(__name__, 'docroot/{}'.format(f))
 
 
 class WebPlugin(Plugin):
