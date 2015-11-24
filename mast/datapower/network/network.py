@@ -7,8 +7,8 @@ tasks associated with IBM DataPower appliances.
 Copyright 2014, All Rights Reserved
 McIndi Solutions LLC
 =========================================================="""
-import os
 import flask
+import urllib2
 import commandr
 from mast.plugins.web import Plugin
 from pkg_resources import resource_string
@@ -174,14 +174,14 @@ support RoutingStatus3.'"""
             str(env.appliances)))
 
     # try RoutingStatus3 first
-    logger.debug("Attempting RoutingStatus3")
-    resp = env.perform_action(
-        "get_status",
-        domain="default",
-        provider="RoutingStatus3")
-    xpath = datapower.STATUS_XPATH + "RoutingStatus3"
-    all_failed = all(val is False for val in resp.values())
-    if all_failed:
+    try:
+        logger.debug("Attempting RoutingStatus3")
+        resp = env.perform_action(
+            "get_status",
+            domain="default",
+            provider="RoutingStatus3")
+        xpath = datapower.STATUS_XPATH + "RoutingStatus3"
+    except urllib2.HTTPError:
         logger.warn(
             "RoutingStatus3 unavailable, falling back to RoutingStatus2")
         resp = env.perform_action(
