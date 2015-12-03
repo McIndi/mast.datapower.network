@@ -4,5 +4,9 @@ from network import cli
 import sys
 sys.argv[0] = "mast-network"
 
-cli.Run()
-
+try:
+    cli.Run()
+except AttributeError, e:
+    if "'NoneType' object has no attribute 'app'" in e:
+        raise NotImplementedError(
+            "HTML formatted output is not supported on the CLI")
