@@ -650,7 +650,7 @@ Parameters:
 def add_static_route(appliances=[], credentials=[],
                      timeout=120, save_config=False,
                      EthernetInterface="", destination=None,
-                     gateway=None, metric='0', web=False,
+                     gateway=None, metric=None, web=False,
                      no_check_hostname=False):
     """Adds a static route to the specified appliance on the specified
 ethernet interface
@@ -665,6 +665,10 @@ the host alias
 * metric - Set the metric (priority) for this static route.
 (The higher the metric the more prefered that route will be)"""
     check_hostname = not no_check_hostname
+    if not isinstance(metric, basestring) and metric.isdigit():
+        print "metric must be provided and must be a number >= 0"
+        import sys
+        sys.exit(-1)
     env = datapower.Environment(
         appliances,
         credentials,
