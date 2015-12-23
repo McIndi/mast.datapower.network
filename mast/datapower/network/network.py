@@ -43,10 +43,36 @@ Usage = cli.Usage
 
 @logged("mast.datapower.network")
 @cli.command('check-connectivity', category='network tests')
-def check_connectivity(appliances=[], credentials=[],
-                       timeout=120, web=False, no_check_hostname=False):
+def check_connectivity(appliances=[],
+                       credentials=[],
+                       timeout=120,
+                       no_check_hostname=False,
+                       web=False):
     """Check the connectivity of the three mgmt interfaces (xml, web and cli)
-    on the specified appliances."""
+on the specified appliances.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
     env = datapower.Environment(
@@ -80,16 +106,40 @@ def check_connectivity(appliances=[], credentials=[],
 
 @logged("mast.datapower.network")
 @cli.command('tcp-connection-test', category='network tests')
-def tcp_connection_test(appliances=[], credentials=[],
-                        timeout=120, remote_hosts=[],
-                        remote_ports=[], web=False, no_check_hostname=False):
+def tcp_connection_test(appliances=[],
+                        credentials=[],
+                        timeout=120,
+                        no_check_hostname=False,
+                        remote_hosts=[],
+                        remote_ports=[],
+                        web=False):
     """Perform a TCP Connection Test from each appliance to each remote_host
     at each remote_port
 
 Parameters:
 
-* remote_hosts - The remote hosts to test for connectivity
-* remote_ports - The ports on the remote hosts to test"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-r, --remote-hosts`: The remote hosts to test for connectivity
+* `-R, --remote-ports`: The ports on the remote hosts to test
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
     env = datapower.Environment(
@@ -154,14 +204,39 @@ Parameters:
 # TODO: clean up web output (maybe into a seperate function call)
 @logged("mast.datapower.network")
 @cli.command("display-routing-table", category="network config")
-def display_routing_table(appliances=[], credentials=[],
-                          timeout=120, web=False,
-                          no_check_hostname=False):
+def display_routing_table(appliances=[],
+                          credentials=[],
+                          timeout=120,
+                          no_check_hostname=False,
+                          web=False):
     """Display the routing table for the specified appliances
 
 __NOTE__: This will try the RoutingStatus3 status provider and
 it will fall back to RoutingStatus2 if the appliance doesn't
-support RoutingStatus3.'"""
+support RoutingStatus3.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
     env = datapower.Environment(
@@ -228,17 +303,41 @@ support RoutingStatus3.'"""
 
 @logged("mast.datapower.network")
 @cli.command('display-ethernet-interface', category='network config')
-def display_ethernet_interface(appliances=[], credentials=[], timeout=120,
-                               EthernetInterface="", persisted=True,
-                               web=False, no_check_hostname=False):
+def display_ethernet_interface(appliances=[],
+                               credentials=[],
+                               timeout=120,
+                               no_check_hostname=False,
+                               EthernetInterface="",
+                               persisted=True,
+                               web=False):
     """This will display the details of the specified ethernet interface
 on the specified appliances.
 
 Parameters:
 
-* EthernetInterface - The EthernetInterface to examine
-* persisted - Whether to get the persisted configuration, otherwise
-the running configuration will be returned"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-E, --EthernetInterface`: The EthernetInterface to examine
+* `-p, --persisted`: Whether to get the persisted configuration, otherwise
+the running configuration will be returned
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
     env = datapower.Environment(
@@ -269,11 +368,36 @@ the running configuration will be returned"""
 
 @logged("mast.datapower.network")
 @cli.command('list-host-aliases', category='network config')
-def list_host_aliases(appliances=[], credentials=[],
-                      timeout=120, web=False,
-                      no_check_hostname=False):
+def list_host_aliases(appliances=[],
+                      credentials=[],
+                      timeout=120,
+                      no_check_hostname=False,
+                      web=False):
     """Lists the host aliases of the specified appliances as well as
-the host aliases common to all specified appliances."""
+the host aliases common to all specified appliances.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
     env = datapower.Environment(
@@ -311,20 +435,45 @@ the host aliases common to all specified appliances."""
 
 @logged("mast.datapower.network")
 @cli.command('add-host-alias', category='network config')
-def add_host_alias(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   name=None, ip=None,
-                   admin_state='enabled', web=False,
-                   no_check_hostname=False):
+def add_host_alias(appliances=[],
+                   credentials=[],
+                   timeout=120,
+                   no_check_hostname=False,
+                   save_config=False,
+                   name=None,
+                   ip=None,
+                   admin_state='enabled',
+                   web=False):
     """Adds a host alias to the specified appliances.
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after adding
-the host alias
-* name - The name of the host alias
-* ip - The IP address for the host alias
-* admin-state - The admin state for the host alias (enabled or disabled)"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration will be saved
+after adding the host alias
+* `-N, --name`: The name of the host alias
+* `-i, --ip`: The IP address for the host alias
+* `-A, --admin-state`: The admin state for the host alias
+(enabled or disabled) [DEFAULT: enabled]
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     logger = make_logger("mast.network")
     check_hostname = not no_check_hostname
     env = datapower.Environment(
@@ -355,16 +504,40 @@ the host alias
 
 @logged("mast.datapower.network")
 @cli.command('del-host-alias', category='network config')
-def del_host_alias(appliances=[], credentials=[],
-                   timeout=120, save_config=False,
-                   HostAlias="", web=False, no_check_hostname=False):
+def del_host_alias(appliances=[],
+                   credentials=[],
+                   timeout=120,
+                   no_check_hostname=False,
+                   save_config=False,
+                   HostAlias="",
+                   web=False):
     """Removes a host alias from the specified appliances.
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after
-removing the host alias
-* HostAlias - The name of the host alias to remove"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-H, --HostAlias`: The name of the host alias to remove
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -390,16 +563,39 @@ removing the host alias
 
 @logged("mast.datapower.network")
 @cli.command('list-secondary-addresses', category='network config')
-def list_secondary_addresses(appliances=[], credentials=[],
-                             timeout=120, EthernetInterface="",
-                             web=False, no_check_hostname=False):
+def list_secondary_addresses(appliances=[],
+                             credentials=[],
+                             timeout=120,
+                             no_check_hostname=False,
+                             EthernetInterface="",
+                             web=False):
     """This will list the secondary IP Addresses on the specified
 Ethernet Interface for the specified appliances.
 
 Parameters:
 
-* EthernetInterface - The ethernet interface to examine for secondary
-addresses"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-E, --EthernetInterface`: The ethernet interface to examine for secondary
+addresses
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -425,22 +621,45 @@ addresses"""
 
 @logged("mast.datapower.network")
 @cli.command('add-secondary-address', category='network config')
-def add_secondary_address(appliances=[], credentials=[],
-                          timeout=120, save_config=False,
+def add_secondary_address(appliances=[],
+                          credentials=[],
+                          timeout=120,
+                          no_check_hostname=False,
+                          save_config=False,
                           EthernetInterface="",
-                          secondary_address=None, web=False,
-                          no_check_hostname=False):
+                          secondary_address=None,
+                          web=False):
     """Adds a secondary IP address to the specified appliances on the
 specified ethernet interface
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after
-adding the host alias
-* EthernetInterface- The ethernet interface to which to add the
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-E, --EthernetInterface`: The ethernet interface to which to add the
 secondary address
-* secondary-address - The secondary IP address to add to the ethernet
-interface"""
+* `-S, --secondary-address`: The secondary IP address to add to the ethernet
+interface
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -468,22 +687,45 @@ interface"""
 
 @logged("mast.datapower.network")
 @cli.command('del-secondary-address', category='network config')
-def del_secondary_address(appliances=[], credentials=[],
-                          timeout=120, save_config=False,
+def del_secondary_address(appliances=[],
+                          credentials=[],
+                          timeout=120,
+                          no_check_hostname=False,
+                          save_config=False,
                           EthernetInterface="",
-                          secondary_address=None, web=False,
-                          no_check_hostname=False):
+                          secondary_address=None,
+                          web=False):
     """Removes a secondary IP address from the specified appliances on the
 specified ethernet interface
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after
-adding the host alias
-* EthernetInterface - The ethernet interface to remove the
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-E, --EthernetInterface`: The ethernet interface to remove the
 secondary address from
-* secondary-address - The secondary IP address to remove from the
-ethernet interface"""
+* `-S, --secondary-address`: The secondary IP address to remove from the
+ethernet interface
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -512,10 +754,35 @@ ethernet interface"""
 
 @logged("mast.datapower.network")
 @cli.command('list-static-hosts', category='network config')
-def list_static_hosts(appliances=[], credentials=[],
-                      timeout=120, web=False,
-                      no_check_hostname=False):
-    """This will list the static hosts on the specified appliances."""
+def list_static_hosts(appliances=[],
+                      credentials=[],
+                      timeout=120,
+                      no_check_hostname=False,
+                      web=False):
+    """This will list the static hosts on the specified appliances.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -547,10 +814,30 @@ def add_static_host(appliances=[], credentials=[],
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after adding
-the host alias
-* hostname - The hostname of the static host
-* ip - The IP address of the static host"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-H, --hostname`: The hostname of the static host
+* `-i, --ip`: The IP address of the static host
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -578,17 +865,40 @@ the host alias
 
 @logged("mast.datapower.network")
 @cli.command('del-static-host', category='network config')
-def del_static_host(appliances=[], credentials=[],
-                    timeout=120, save_config=False,
-                    hostname=None, web=False,
-                    no_check_hostname=False):
+def del_static_host(appliances=[],
+                    credentials=[],
+                    timeout=120,
+                    no_check_hostname=False,
+                    save_config=False,
+                    hostname=None,
+                    web=False):
     """Removes a static host from the specified appliances
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after adding
-the host alias
-* hostname - The hostname of the static host"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-H, --hostname`: The hostname of the static host
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -614,15 +924,38 @@ the host alias
 
 @logged("mast.datapower.network")
 @cli.command('list-static-routes', category='network config')
-def list_static_routes(appliances=[], credentials=[], timeout=120,
-                       EthernetInterface="", web=False,
-                       no_check_hostname=False):
+def list_static_routes(appliances=[],
+                       credentials=[],
+                       no_check_hostname=False,
+                       timeout=120,
+                       EthernetInterface="",
+                       web=False):
     """This will list all of the static routes on the specified
 EthernetInterface on the specified appliances.
 
 Parameters:
 
-* EthernetInterface - The EthernetInterface to examine fir static routes"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-E, --EthernetInterface`: The EthernetInterface to examine fir static routes
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -647,23 +980,48 @@ Parameters:
 
 @logged("mast.datapower.network")
 @cli.command('add-static-route', category='network config')
-def add_static_route(appliances=[], credentials=[],
-                     timeout=120, save_config=False,
-                     EthernetInterface="", destination=None,
-                     gateway=None, metric=None, web=False,
-                     no_check_hostname=False):
+def add_static_route(appliances=[],
+                     credentials=[],
+                     timeout=120,
+                     no_check_hostname=False,
+                     save_config=False,
+                     EthernetInterface="",
+                     destination=None,
+                     gateway=None,
+                     metric=None,
+                     web=False):
     """Adds a static route to the specified appliance on the specified
 ethernet interface
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after adding
-the host alias
-* EthernetInterface - The ethernet interface to add the static route to
-* destination - The destination for the static route
-* gateway - The gateway to use for this static route
-* metric - Set the metric (priority) for this static route.
-(The higher the metric the more prefered that route will be)"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-E, --EthernetInterface`: The ethernet interface to add the static route to
+* `-d, --destination`: The destination for the static route
+* `-g, --gateway`: The gateway to use for this static route
+* `-m, --metric`: Set the metric (priority) for this static route.
+(The higher the metric the more prefered that route will be)
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     if not isinstance(metric, basestring) and metric.isdigit():
         print "metric must be provided and must be a number >= 0"
@@ -696,19 +1054,45 @@ the host alias
 
 @logged("mast.datapower.network")
 @cli.command('del-static-route', category='network config')
-def del_static_route(appliances=[], credentials=[],
-                     timeout=120, save_config=False,
-                     EthernetInterface="", destination=None,
-                     web=False, no_check_hostname=False):
+def del_static_route(appliances=[],
+                     credentials=[],
+                     timeout=120,
+                     no_check_hostname=False,
+                     save_config=False,
+                     EthernetInterface="",
+                     destination=None,
+                     web=False):
     """Removes a static route from the specified appliance on the specified
 ethernet interface
 
 Parameters:
 
-* save-config - If specified the configuration will be saved after removing
-the host alias
-* EthernetInterface - The ethernet interface to remove the static route from
-* destination - The destination for the static route to be removed"""
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-s, --save-config`: If specified the configuration on the
+appliances will be saved
+* `-E, --EthernetInterface`: The ethernet interface to remove the
+static route from
+* `-d, --destination`: The destination for the static route
+to be removed
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -753,9 +1137,35 @@ the host alias
 
 @logged("mast.datapower.network")
 @cli.command('flush-arp-cache', category='caches')
-def flush_arp_cache(appliances=[], credentials=[],
-                    timeout=120, web=False, no_check_hostname=False):
-    """This will flush the ARP Cache on the specified appliances."""
+def flush_arp_cache(appliances=[],
+                    credentials=[],
+                    timeout=120,
+                    no_check_hostname=False,
+                    web=False):
+    """This will flush the ARP Cache on the specified appliances.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -782,9 +1192,35 @@ def flush_arp_cache(appliances=[], credentials=[],
 
 @logged("mast.datapower.network")
 @cli.command('flush-dns-cache', category='caches')
-def flush_dns_cache(appliances=[], credentials=[],
-                    timeout=120, web=False, no_check_hostname=False):
-    """This will flush the DNS Cache for the specified appliances."""
+def flush_dns_cache(appliances=[],
+                    credentials=[],
+                    timeout=120,
+                    no_check_hostname=False,
+                    web=False):
+    """This will flush the DNS Cache for the specified appliances.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -811,9 +1247,35 @@ def flush_dns_cache(appliances=[], credentials=[],
 
 @logged("mast.datapower.network")
 @cli.command('flush-nd-cache', category='caches')
-def flush_nd_cache(appliances=[], credentials=[],
-                   timeout=120, web=False, no_check_hostname=False):
-    """This will flush the ND cache on the specified appliances."""
+def flush_nd_cache(appliances=[],
+                   credentials=[],
+                   timeout=120,
+                   no_check_hostname=False,
+                   web=False):
+    """This will flush the ND cache on the specified appliances.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
@@ -840,11 +1302,38 @@ def flush_nd_cache(appliances=[], credentials=[],
 
 @logged("mast.datapower.network")
 @cli.command('flush-pdp-cache', category='caches')
-def flush_pdp_cache(appliances=[], credentials=[],
-                    timeout=120, XACMLPDP="",
-                    web=False, no_check_hostname=False):
+def flush_pdp_cache(appliances=[],
+                    credentials=[],
+                    timeout=120,
+                    no_check_hostname=False,
+                    XACMLPDP="",
+                    web=False):
     """This will flush the PDP cache on the specified appliances
-for the specified XACMLPDP."""
+for the specified XACMLPDP.
+
+Parameters:
+
+* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+or alias(es) of the appliances you would like to affect. For details
+on configuring environments please see the comments in
+`environments.conf` located in `$MAST_HOME/etc/default`. For details
+on configuring aliases please see the comments in `hosts.conf` located
+in `$MAST_HOME/etc/default`.
+* `-c, --credentials`: The credentials to use for authenticating to the
+appliances. Should be either one set to use for all appliances
+or one set for each appliance. Credentials should be in the form
+`username:password` and should be provided in a space-seperated list
+if multiple are provided. If you would prefer to not use plain-text
+passwords, you can use the output of
+`$ mast-system xor <username:password>`.
+* `-t, --timeout`: The timeout in seconds to wait for a response from
+an appliance for any single request. __NOTE__ Program execution may
+halt if a timeout is reached.
+* `-n, --no-check-hostname`: If specified SSL verification will be turned
+off when sending commands to the appliances.
+* `-X, --XACMLPDP`: The XACMLPDP for which to flush the PDP cache
+* `-w, --web`: __For Internel Use Only, will be removed in future versions.
+DO NOT USE.__"""
     check_hostname = not no_check_hostname
     env = datapower.Environment(
         appliances,
