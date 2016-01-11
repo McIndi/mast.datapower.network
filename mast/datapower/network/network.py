@@ -4,7 +4,7 @@ mast network:
 A set of tools for automating routine network administration
 tasks associated with IBM DataPower appliances.
 
-Copyright 2014, All Rights Reserved
+Copyright 2016, All Rights Reserved
 McIndi Solutions LLC
 =========================================================="""
 import flask
@@ -53,7 +53,7 @@ on the specified appliances.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -62,10 +62,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -118,7 +121,7 @@ def tcp_connection_test(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -127,10 +130,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -217,7 +223,7 @@ support RoutingStatus3.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -226,10 +232,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -315,7 +324,7 @@ on the specified appliances.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -324,10 +333,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -378,7 +390,7 @@ the host aliases common to all specified appliances.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -387,10 +399,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-textpasswords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -448,7 +463,7 @@ def add_host_alias(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -457,10 +472,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -515,7 +533,7 @@ def del_host_alias(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -524,10 +542,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -574,7 +595,7 @@ Ethernet Interface for the specified appliances.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -583,10 +604,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -634,7 +658,7 @@ specified ethernet interface
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -643,10 +667,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -700,7 +727,7 @@ specified ethernet interface
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -709,10 +736,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -763,7 +793,7 @@ def list_static_hosts(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -772,10 +802,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -814,7 +847,7 @@ def add_static_host(appliances=[], credentials=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -823,10 +856,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -876,7 +912,7 @@ def del_static_host(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -885,10 +921,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords,  
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -935,7 +974,7 @@ EthernetInterface on the specified appliances.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -944,16 +983,19 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
 * `-n, --no-check-hostname`: If specified SSL verification will be turned
 off when sending commands to the appliances.
-* `-E, --EthernetInterface`: The EthernetInterface to examine fir static routes
+* `-E, --EthernetInterface`: The EthernetInterface to examine for static routes
 * `-w, --web`: __For Internel Use Only, will be removed in future versions.
 DO NOT USE.__"""
     check_hostname = not no_check_hostname
@@ -995,7 +1037,7 @@ ethernet interface
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -1004,10 +1046,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -1019,7 +1064,7 @@ appliances will be saved
 * `-d, --destination`: The destination for the static route
 * `-g, --gateway`: The gateway to use for this static route
 * `-m, --metric`: Set the metric (priority) for this static route.
-(The higher the metric the more prefered that route will be)
+(The higher the metric the more prefered that route will be (range 0-255))
 * `-w, --web`: __For Internel Use Only, will be removed in future versions.
 DO NOT USE.__"""
     check_hostname = not no_check_hostname
@@ -1067,7 +1112,7 @@ ethernet interface
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -1076,10 +1121,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -1146,7 +1194,7 @@ def flush_arp_cache(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -1155,10 +1203,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -1201,7 +1252,7 @@ def flush_dns_cache(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -1210,10 +1261,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -1256,7 +1310,7 @@ def flush_nd_cache(appliances=[],
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -1265,10 +1319,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
@@ -1313,7 +1370,7 @@ for the specified XACMLPDP.
 
 Parameters:
 
-* `-a, --appliances`: The hostname(s), ip addresse(s), environment name(s)
+* `-a, --appliances`: The hostname(s), ip address(es), environment name(s)
 or alias(es) of the appliances you would like to affect. For details
 on configuring environments please see the comments in
 `environments.conf` located in `$MAST_HOME/etc/default`. For details
@@ -1322,10 +1379,13 @@ in `$MAST_HOME/etc/default`.
 * `-c, --credentials`: The credentials to use for authenticating to the
 appliances. Should be either one set to use for all appliances
 or one set for each appliance. Credentials should be in the form
-`username:password` and should be provided in a space-seperated list
-if multiple are provided. If you would prefer to not use plain-text
-passwords, you can use the output of
-`$ mast-system xor <username:password>`.
+`username:password` and should be provided in a space-separated list
+if multiple are provided. When referencing multiple appliances with
+multiple credentials there must be a one to one correspondence of 
+credentials to appliances:
+[appliance1 [appliance2...]] [credential1 [credential2...]] 
+If you would prefer to not use plain-text passwords, 
+you can use the output of `$ mast-system xor <username:password>`.
 * `-t, --timeout`: The timeout in seconds to wait for a response from
 an appliance for any single request. __NOTE__ Program execution may
 halt if a timeout is reached.
