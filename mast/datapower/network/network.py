@@ -1,4 +1,4 @@
-"""==========================================================
+"""
 mast network:
 
 A set of tools for automating routine network administration
@@ -6,7 +6,7 @@ tasks associated with IBM DataPower appliances.
 
 Copyright 2016, All Rights Reserved
 McIndi Solutions LLC
-=========================================================="""
+"""
 import flask
 import urllib2
 import commandr
